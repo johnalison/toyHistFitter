@@ -2,6 +2,7 @@ import ROOT
 rand = ROOT.TRandom3()
 ROOT.gROOT.SetBatch(True)
 
+
 hBkg = ROOT.TH1F("Background","backgound",100,-10,10);
 hSig = ROOT.TH1F("Signal","signal",100,-10,10);
 hSig.SetLineColor(ROOT.kRed)
@@ -49,8 +50,11 @@ hFake.Fit(tf1_sPlusB_func,"Q")
 print "fitted Value",tf1_sPlusB_func.GetParameter(0)
 can.SaveAs("FakeDataWithFit.pdf")
 
-
+hFitAxis = ROOT.TH1F("axis","Injected vs Fitted mu;injected mu;fitted mu",1,0,1)
+hFitAxis.SetStats(0)
 fitResults = ROOT.TGraph(10)
+fitResults.SetMarkerStyle(20)
+fitResults.SetMarkerSize(1.2)
 iPt = 0
 
 for i in range(0,100,10):
@@ -64,6 +68,6 @@ for i in range(0,100,10):
     fitResults.SetPoint(iPt,mu,mu_fit)
 
 can.cd()
-fitResults.SetMarkerSize(10)
-fitResults.Draw("APL")
+hFitAxis.Draw()
+fitResults.Draw("PL")
 can.SaveAs("FitResults.pdf")
